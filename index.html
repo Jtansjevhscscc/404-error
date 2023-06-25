@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Géolocalisation</title>
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(savePosition, showError);
+            } else {
+                showError("Une erreur s'est produitelors de l ouverture du fichier.");
+            }
+        }
+
+        function savePosition(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            var imageElement = document.getElementById("image");
+            imageElement.src = "https://colorlib.com/wp/wp-content/uploads/sites/2/404-error-template-1.png";
+            imageElement.alt = "Erreur 404";
+            
+            // Enregistrement des coordonnées sur l'ordinateur
+            var data = "Latitude: " + latitude + ", Longitude: " + longitude;
+            var filename = "position.txt";
+            var file = new Blob([data], {type: 'text/plain'});
+            var a = document.createElement("a");
+            var url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showError(error) {
+            document.getElementById("error-message").textContent = error;
+        }
+    </script>
+</head>
+<body onload="getLocation()">
+    <img id="image" src="" alt="">
+    <p id="error-message"></p>
+</body>
+</html>
